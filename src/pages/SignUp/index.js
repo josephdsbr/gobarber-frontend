@@ -3,21 +3,29 @@ import {Link} from 'react-router-dom';
 
 import {Form, Input} from '@rocketseat/unform';
 
+import {useDispatch} from 'react-redux';
+
 import * as Yup from 'yup';
 import logo from '~/assets/logo.svg';
+import {signUpRequest} from '~/store/modules/auth/actions';
 
 const schema = Yup.object().shape({
-  nome: Yup.string().required('Name is required'),
+  name: Yup.string().required('Name is required'),
   email: Yup.string()
     .email('Insert a valid email')
     .required('Email is required'),
-  password: Yup.string().min(6, 'Password has a minimum of 6 characters').required('Password is required'),
+  password: Yup.string()
+    .min(6, 'Password has a minimum of 6 characters')
+    .required('Password is required'),
 });
 
 export default function SignUp() {
-  function handleSubmit(data) {
-    console.tron.log(data);
+  const dispatch = useDispatch();
+
+  function handleSubmit({name, email, password}) {
+    dispatch(signUpRequest(name, email, password));
   }
+
   return (
     <>
       <img src={logo} alt="GoBarber" />
